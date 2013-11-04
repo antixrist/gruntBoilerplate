@@ -1,0 +1,64 @@
+// Overall
+$effeckt-transition-duration: 500ms !default;
+$effeckt-perspective: 600px !default;
+
+
+// Modals
+$effeckt-modal-transition-duration: $effeckt-transition-duration !default;
+
+// Forcing size so we can center w/o translate()
+$effeckt-modal-min-width: 320px !default;
+$effeckt-modal-max-width: 320px !default;
+
+$effeckt-modal-z-index: 2000 !default;
+
+
+
+// Buttons
+$effeckt-buttons-transition-duration: $effeckt-transition-duration !default;
+$effeckt-buttons-spinner-size: 32px !default;
+
+
+// Page Transitions
+$effeckt-page-transition-duration: $effeckt-transition-duration * 2 !default;
+
+
+
+
+// Off Screen Nav
+$effeckt-off-screen-navigation-transition-duration: $effeckt-transition-duration !default;
+
+
+
+// Captions
+$effeckt-caption-transition-duration: $effeckt-transition-duration !default;
+
+
+
+// List Items
+$effeckt-list-item-transition-duration: $effeckt-transition-duration !default;
+$effeckt-list-scroll-transition-duration: $effeckt-transition-duration !default;
+
+
+
+// Form Elements
+// Radio and Checkboxes
+$effeckt-form-element-ckradio-ios7bg-off: #FFF !default;
+$effeckt-form-element-ckradio-ios7bg-on: #666 !default;
+$effeckt-form-element-ckradio-ios7border-radius: 15px !default;
+$effeckt-form-element-ckradio-ios7transition: all .3s ease-out !default;
+$effeckt-form-element-ckradio-ios7transition-after: all 0.1s ease-in .1s !default;
+
+
+// Tabs
+$effeckt-tabs-transition-duration: $effeckt-transition-duration !default;
+
+
+// Tooltips
+$effeckt-tooltip-transition-delay: .2s !default;
+$effeckt-tooltip-transition-duration: .3s !default;
+$effeckt-tooltip-background: black !default;
+$effeckt-tooltip-forground: white !default;
+
+// Lazy loading
+$effeckt-lazy-loading-transition-duration: 0.5s;

@@ -1,0 +1,187 @@
+/**
+ * SASS/SCSS Relative Units.
+ */
+/** Hepler. Remove unit from input number **/
+@function clear-unit ($value) {
+	@if type-of($value) == "number" {
+		@if (unitless($value)) {
+			@return $value;
+		} @elseif unit($value) == "em" {
+			@return $value / 1em;
+		} @elseif unit($value) == "rem" {
+			@return $value / 1rem;
+		} @elseif unit($value) == "px" {
+			@return $value / 1px;
+		} @elseif unit($value) == "pt" {
+			@return $value / 1pt;
+		}
+	} @else {
+		@warn "Not a number value: #{$value}";
+		@return $value;
+	}
+}
+/** Hepler. Make unit from input number. Replace $value unit to target unit **/
+@function replace-unit ($value, $unit: px) {
+	$value: clear-unit($value);
+	@if type-of($value) == "number" {
+		@if $value == 0 {
+			@return $value;
+		} @elseif $unit == "em" {
+			@return $value * 1em;
+		} @elseif $unit == "rem" {
+			@return $value * 1rem;
+		} @elseif $unit == "px" {
+			@return $value * 1px;
+		} @elseif $unit == "pt" {
+			@return $value * 1pt;
+		}
+	} @else {
+		@warn "Not a number value: #{$value}";
+		@return $value;
+	}
+}
+
+/**
+ * Convert functions.
+ */
+/** PX to EM (based on $font-size) **/
+@function px-to-em ($value, $font-size: $base-font-size) {
+	$value		: clear-unit($value);
+	$font-size	: clear-unit($font-size);
+	@return replace-unit($value / $font-size, em);
+}
+/** EM (based on $font-size) to PX **/
+@function em-to-px ($value, $font-size: $base-font-size) {
+	$value		: clear-unit($value);
+	$font-size	: clear-unit($font-size);
+	@return replace-unit($value * $font-size, px);
+}
+/** PX to REM (based on $base-font-size) **/
+@function px-to-rem ($value) {
+	$value			: clear-unit($value);
+	$base-font-size	: clear-unit($base-font-size);
+	@return replace-unit($value / $base-font-size, rem);
+}
+/** REM (based on $base-font-size) to PX **/
+@function rem-to-px ($value) {
+	$value			: clear-unit($value);
+	$base-font-size	: clear-unit($base-font-size);
+	@return replace-unit($value * $base-font-size, px);
+}
+/** EM (based on $font-size) to REM (based on $base-font-size) **/
+@function em-to-rem ($value, $font-size: $base-font-size) {
+	$value			: clear-unit($value);
+	$font-size		: clear-unit($font-size);
+	$base-font-size	: clear-unit($base-font-size);
+	@return replace-unit($font-size * $value / $base-font-size, rem);
+}
+/** REM (based on $base-font-size) to EM (based on $font-size) **/
+@function rem-to-em ($value, $font-size: $base-font-size) {
+	$value			: clear-unit($value);
+	$font-size		: clear-unit($font-size);
+	$base-font-size	: clear-unit($base-font-size);
+	@return replace-unit($value * $base-font-size / $font-size, em);
+}
+
+@function make-unit-handler ($input, $target-unit: px, $font-size: $base-font-size) {
+	$result-single: '';
+	@if type-of($input) == list {
+		$i: 0;
+		$result: ();
+		@each $number in $input {
+			$i: $i + 1;
+			$value	: make-unit-handler($number, $target-unit, $font-size);
+			$result : append($result, $value);
+		}
+		@return $result;
+	} @elseif type-of($input) == number {
+		
+		$input-unit: unit($input);
+
+		@if $target-unit == px {
+
+			@if $input-unit == px {
+				$result-single: $input;
+			} @elseif $input-unit == em {
+				$result-single: em-to-px($input, $font-size);
+			} @elseif $input-unit == rem {
+				$result-single: rem-to-px($input);
+			} @else {
+				$result-single: replace-unit($input, $target-unit);
+			}
+
+		} @elseif $target-unit == em {
+
+			@if $input-unit == px or unitless($input) {
+				$result-single: px-to-em($input, $font-size);
+			} @elseif $input-unit == em {
+				$result-single: $input;
+			} @elseif $input-unit == rem {
+				$result-single: rem-to-em($input, $font-size);
+			} @else {
+				$result-single: $input;
+			}
+
+		} @elseif $target-unit == rem {
+			@if $input-unit == px or unitless($input) {
+				$result-single: px-to-rem($input);
+			} @elseif $input-unit == em {
+				$result-single: em-to-rem($input, $font-size);
+			} @elseif $input-unit == rem {
+				$result-single: $input;
+			} @else {
+				$result-single: $input;
+			}
+
+		} @else {
+			// $target-unit: px;
+			@if $input-unit == px {
+				$result-single: $input;
+			} @elseif $input-unit == em {
+				$result-single: em-to-px($input, $font-size);
+			} @elseif $input-unit == rem {
+				$result-single: rem-to-px($input);
+			} @else {
+				$result-single: replace-unit($input, $target-unit);
+			}
+
+		}
+	} @else {
+		$result-single: $input;
+	}
+	@return unquote($result-single);
+}
+
+@function px ($input, $font-size: $base-font-size) {
+	@return make-unit-handler($input, px, $font-size);
+}
+@function em ($input, $font-size: $base-font-size) {
+	@return make-unit-handler($input, em, $font-size);
+}
+@function rem ($input, $font-size: $base-font-size) {
+	@return make-unit-handler($input, rem, $font-size);
+}
+
+@function to-unit ($value, $unit: rem) {
+	// convert to needed $unit
+	@if $unit == px {
+		$value: px($value);
+	} @elseif $unit == em {
+		$value: em($value, $font-size);
+	} @elseif $unit == rem {
+		$value: rem($value);
+	} @else {
+		$value: replace-unit($value, px);
+	}
+	@return $value;
+}
+
+@mixin em ($property, $value, $font-size: $base-font-size) {
+	#{$property}: em($value, $font-size);
+}
+@mixin rem ($property, $value, $font-size: $base-font-size, $with-fallback: true) {
+	@if $with-fallback == true {
+		#{$property}: px($value, $font-size); // fallback for lte ie8
+	}
+	#{$property}: rem($value, $font-size);
+}
