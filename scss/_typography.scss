@@ -1,0 +1,119 @@
+html,
+button,
+input,
+select,
+textarea {
+  color: $text-color;
+}
+
+html {
+  font-size: $base-font-size;
+  line-height: em($base-line-height);
+}
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+audio,
+canvas,
+img,
+video,
+input[type=image] {
+  max-width:100%;
+  vertical-align: middle;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ==========================================================================
+   Browse Happy prompt
+   ========================================================================== */
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+a, .link {
+  @include link-style ($link-color);
+
+  &.no-border {
+    border: none;
+  }
+
+  .logo &, &.logo {
+    text-decoration: none;
+    border:none;
+  }
+}
+
+
+dd {
+  @include rem(margin-left, $indent-amount);
+}
+menu, ol, ul {
+  @include rem(padding-left, $indent-amount);
+}
+
+.unstyled-list {
+  @include no-bullets();
+  padding: 0;
+  margin: 0;
+}
+
+.icon {
+  display:inline-block;
+  text-decoration:none;
+  text-indent:-9999px;
+  vertical-align: middle;
+  border:none;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+@each $type in $input-types {
+  input[type=#{$type}] {
+    // @include input-style();
+    // font-size : 1em;
+
+    // .error &,
+    // &.error {
+      
+    // }
+  }
+}
+textarea {
+  // @include input-style();
+  // font-size: 1em;
+
+  // .error &,
+  // &.error {
+    
+  // }
+}

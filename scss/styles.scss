@@ -1,13 +1,11 @@
 @import "compass";
 @import "singularitygs";
 @import "breakpoint";
-// @import "compass-recipes";
 
 
-@import "include/_normalize";
-@import "CSS:include/main";
+@import "_plugins";
 @import "_settings";
+@import "_helpers";
+@import "_typography";
+@import "_layout";
 
-// @import "plugins/_plugins";
-// @import "layout/_layout";
-// @import "design/_design";

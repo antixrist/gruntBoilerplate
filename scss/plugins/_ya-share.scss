@@ -1,0 +1,10 @@
+.b-ya-likes {
+	// padding: rem(50px);
+	.b-ya-label {
+		font-size: .95em;
+	}
+	.b-share__link {
+		@include box-sizing(content-box);
+		border-bottom: none;
+	}
+}

@@ -1,14 +1,13 @@
 module.exports = function(grunt) {
-	var destDir = './result/';
+	var destDir = 'result/';
 	var _ = require('lodash');
 	// "gem install" all of this:
 	var compassExt	= [
-		'breakpoint',
-		'compass-recipes',
-		'singularitygs',
-		'compass',
-		'sass-css-importer',
-		'rails-sass-images'
+		'breakpoint'
+		,'compass-recipes'
+		,'singularitygs'
+		,'compass'
+		// ,'rails-sass-images'
 	];
 
 	var config = {
@@ -31,9 +30,13 @@ module.exports = function(grunt) {
 			html: {
 				files: [destDir +'/**/*.html']
 			},
-			js: {
-				files: ['js/**/*.js'],
-				tasks: 'js'
+			jsMain: {
+				files: ['js/main/*.js'],
+				tasks: 'jsMain'
+			},
+			jsPlugins: {
+				files: ['js/plugins/*.js'],
+				tasks: 'jsPlugins'
 			},
 			livereload: {
 				options: {
@@ -41,8 +44,8 @@ module.exports = function(grunt) {
 				},
 				files: [
 					destDir +'**/*.html',
-					destDir +'css/{,*/}*.css',
-					destDir +'js/{,*/}*.js'
+					destDir +'css/*.css',
+					destDir +'js/*.js'
 				]
 			}
 		},
@@ -133,14 +136,15 @@ module.exports = function(grunt) {
 	config.csso.compress.files[destDir +'css/styles.min.css'] = [destDir +'css/styles.css'];
 
 	var compassConfig = {
-		require: compassExt,
-		httpPath: '/',
-		cssDir: 'css',
-		sassDir: 'scss',
-		imagesDir: destDir +'i',
-		javascriptsDir: 'js',
-		outputStyle: 'expanded',
-		environment: 'development'
+		require			: compassExt,
+		httpPath		: '/',
+		cssDir			: 'css',
+		sassDir			: 'scss',
+		imagesDir		: destDir +'i',
+		httpImagesPath	: '../i',
+		javascriptsDir	: 'js',
+		outputStyle		: 'expanded',
+		environment		: 'development'
 	};
 	config.compass = {
 		dev: {},
@@ -163,11 +167,13 @@ module.exports = function(grunt) {
 		'autoprefixer',
 		'copy:css'
 	];
-	var jsTask = [
-		'concat:plugins',
-		'concat:pluginsWrap',
+	var jsMainTask = [
 		'concat:main',
 		'concat:scriptsWrap'
+	];
+	var jsPluginsTask = [
+		'concat:plugins',
+		'concat:pluginsWrap'
 	];
 	var minifyingTask = [
 		'csso',
@@ -175,10 +181,11 @@ module.exports = function(grunt) {
 	]
 
 	grunt.registerTask('css', ['compass:dev'].concat(cssTask));
-	grunt.registerTask('js', jsTask);
+	grunt.registerTask('jsMain', jsMainTask);
+	grunt.registerTask('jsPlugins', jsPluginsTask);
 	grunt.registerTask('min', minifyingTask);
 
-	var productionConfig = ['compass:prod'].concat(cssTask, jsTask, minifyingTask);
+	var productionConfig = ['compass:prod'].concat(cssTask, jsMainTask, jsPluginsTask, minifyingTask);
 	grunt.registerTask('default', productionConfig); // default task as a production config
 	grunt.registerTask('prod', productionConfig);
 	grunt.registerTask('dev', ['connect', 'watch']);
